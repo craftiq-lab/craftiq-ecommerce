@@ -1,0 +1,349 @@
+{
+  "products": [
+    {
+      "id": "prod-1",
+      "name": "Minimalist Teak Wall Panel",
+      "slug": "minimalist-teak-wall-panel",
+      "sku": "CRFT-001",
+      "price": 4500,
+      "compareAtPrice": 5500,
+      "stock": 12,
+      "description": "Handcrafted from premium seasoned teak wood, this geometric wall art brings natural warmth and architectural depth to modern interiors.",
+      "image": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=1000&q=80",
+      "gallery": [],
+      "videoUrl": "",
+      "woodType": "Seasoned Chittagong Teak",
+      "finish": "Natural Organic Beeswax",
+      "dimensions": "24 inch × 18 inch × 1.5 inch",
+      "weight": "2.4 KG Solid Timber",
+      "careInstructions": "Wipe gently with a soft, dry lint-free cloth.\nAvoid direct harsh sunlight or moisture.\nApply natural beeswax every 6 months.",
+      "category": {
+        "name": "Home Decor"
+      },
+      "reviews": []
+    },
+    {
+      "id": "prod-2",
+      "name": "Artisan Pine Wood Perpetual Calendar",
+      "slug": "artisan-pine-wood-perpetual-calendar",
+      "sku": "CRFT-002",
+      "price": 1450,
+      "compareAtPrice": 1800,
+      "stock": 25,
+      "description": "Precision laser-engraved pine wood perpetual desk calendar. A timeless companion for your modern workspace that lasts year after year.",
+      "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=80",
+      "gallery": [],
+      "videoUrl": "",
+      "woodType": "Imported Seasoned Pine & Teak",
+      "finish": "Matte Smooth Sealant",
+      "dimensions": "8 inch × 5 inch × 2.5 inch",
+      "weight": "0.6 KG",
+      "careInstructions": "Dust lightly with a dry brush or soft cloth.\nKeep away from water spills.",
+      "category": {
+        "name": "Workspace"
+      },
+      "reviews": []
+    },
+    {
+      "id": "prod-3",
+      "name": "Water-Resistant Wooden Soap Dish Pair",
+      "slug": "water-resistant-wooden-soap-dish",
+      "sku": "CRFT-003",
+      "price": 650,
+      "compareAtPrice": 850,
+      "stock": 40,
+      "description": "Slatted self-draining wooden soap holders treated with hydrophobic natural oil to resist moisture and extend soap life.",
+      "image": "https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?auto=format&fit=crop&w=1000&q=80",
+      "gallery": [],
+      "videoUrl": "",
+      "woodType": "Water-Treated Teak Wood",
+      "finish": "Hydrophobic Natural Oil Coating",
+      "dimensions": "4.5 inch × 3.2 inch × 0.8 inch",
+      "weight": "0.3 KG",
+      "careInstructions": "Rinse soap residue occasionally and air dry.\nKeep slots clear for proper drainage.",
+      "category": {
+        "name": "Home Decor"
+      },
+      "reviews": []
+    },
+    {
+      "id": "prod-4",
+      "name": "Hand-Carved Sheesham Serving Platter",
+      "slug": "hand-carved-sheesham-serving-platter",
+      "sku": "CRFT-004",
+      "price": 2200,
+      "compareAtPrice": 2600,
+      "stock": 15,
+      "description": "Ergonomic solid Sheesham wood serving tray finished with 100% food-safe mineral oil and organic beeswax.",
+      "image": "https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&w=1000&q=80",
+      "gallery": [],
+      "videoUrl": "",
+      "woodType": "Solid Rosewood / Sheesham",
+      "finish": "100% Food-Safe Mineral Oil",
+      "dimensions": "16 inch × 10 inch × 1.2 inch",
+      "weight": "1.4 KG",
+      "careInstructions": "Hand wash only with mild soap and dry immediately.\nNever soak in water or put in a dishwasher.",
+      "category": {
+        "name": "Kitchen"
+      },
+      "reviews": []
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-26541",
+      "customerId": "CUST-4493",
+      "status": "DELETED",
+      "createdAt": "2026-11-14T22:23:34.328Z",
+      "customerName": "Craftiq Guest",
+      "phone": "01319093025",
+      "district": "Dhaka",
+      "thana": "Mirpur",
+      "address": "13rwdf, Mirpur, Mirpur, Mirpur, Mirpur, Mirpur, Mirpur",
+      "city": "Dhaka",
+      "orderNote": null,
+      "deliveryZone": "Inside Dhaka (৳70)",
+      "deliveryCharge": 70,
+      "paymentMethod": "Cash on Delivery",
+      "items": [
+        {
+          "id": "prod-1",
+          "name": "Minimalist Teak Wall Panel",
+          "price": 4500,
+          "quantity": 1
+        }
+      ],
+      "total": 4570,
+      "consignmentId": "320936530",
+      "steadfastId": "320936530",
+      "sfId": "320936530",
+      "trackingCode": "SFR261115ST9F2D0A3BD",
+      "courier": "Steadfast",
+      "isDeleted": true
+    },
+    {
+      "id": "ORD-51280",
+      "customerId": "CUST-4493",
+      "status": "Shipped via Steadfast",
+      "createdAt": "2026-11-14T20:43:26.328Z",
+      "customerName": "Craftiq Guest",
+      "phone": "01319093025",
+      "district": "Dhaka",
+      "thana": "Mirpur",
+      "address": "13rwdf, Mirpur, Mirpur, Mirpur, Mirpur, Mirpur",
+      "city": "Dhaka",
+      "orderNote": null,
+      "deliveryZone": "Inside Dhaka (৳70)",
+      "deliveryCharge": 70,
+      "paymentMethod": "Cash on Delivery",
+      "items": [
+        {
+          "id": "prod-1",
+          "name": "Minimalist Teak Wall Panel",
+          "price": 4500,
+          "quantity": 1
+        }
+      ],
+      "total": 4570,
+      "consignmentId": "320934515",
+      "trackingCode": "SFR261115STF1F1332BD"
+    },
+    {
+      "id": "ORD-21722",
+      "customerId": "CUST-4493",
+      "status": "Shipped via Steadfast",
+      "createdAt": "2026-11-14T20:20:35.013Z",
+      "customerName": "Craftiq Guest",
+      "phone": "01319093025",
+      "district": "Dhaka",
+      "thana": "Mirpur",
+      "address": "13rwdf, Mirpur, Mirpur, Mirpur, Mirpur",
+      "city": "Dhaka",
+      "orderNote": "dfg",
+      "deliveryZone": "Inside Dhaka (৳70)",
+      "deliveryCharge": 70,
+      "paymentMethod": "Cash on Delivery",
+      "items": [
+        {
+          "id": "prod-3",
+          "name": "Water-Resistant Wooden Soap Dish Pair",
+          "slug": "water-resistant-wooden-soap-dish",
+          "price": 650,
+          "image": "https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?auto=format&fit=crop&w=1000&q=80",
+          "quantity": 1
+        }
+      ],
+      "total": 720
+    },
+    {
+      "id": "ORD-78198",
+      "customerId": "CUST-4493",
+      "status": "Shipped via Steadfast",
+      "createdAt": "2026-11-14T18:17:24.900Z",
+      "customerName": "Craftiq Guest",
+      "phone": "01319093025",
+      "district": "Dhaka",
+      "thana": "Mirpur",
+      "address": "13rwdf, Mirpur, Mirpur, Mirpur",
+      "city": "Dhaka",
+      "orderNote": "",
+      "deliveryZone": "Inside Dhaka (৳70)",
+      "deliveryCharge": 70,
+      "paymentMethod": "Cash on Delivery",
+      "items": [
+        {
+          "id": "prod-3",
+          "name": "Water-Resistant Wooden Soap Dish Pair",
+          "price": 650,
+          "quantity": 1
+        }
+      ],
+      "total": 720,
+      "consignmentId": "SF-61660467",
+      "steadfastId": "SF-61660467",
+      "sfId": "SF-61660467",
+      "trackingCode": "TRK-152SG7",
+      "courier": "Steadfast"
+    },
+    {
+      "id": "ORD-81994",
+      "customerId": "CUST-4493",
+      "status": "Shipped via Steadfast",
+      "createdAt": "2026-11-14T17:49:57.879Z",
+      "customerName": "Craftiq Guest",
+      "phone": "01319093025",
+      "district": "Dhaka",
+      "thana": "Mirpur",
+      "address": "13rwdf, Mirpur, Mirpur",
+      "city": "Dhaka",
+      "orderNote": "",
+      "deliveryZone": "Inside Dhaka (৳70)",
+      "deliveryCharge": 70,
+      "paymentMethod": "Cash on Delivery",
+      "items": [
+        {
+          "id": "prod-1",
+          "name": "Minimalist Teak Wall Panel",
+          "slug": "minimalist-teak-wall-panel",
+          "price": 4500,
+          "image": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=1000&q=80",
+          "quantity": 1
+        }
+      ],
+      "total": 4570,
+      "consignmentId": "SF-73093550",
+      "steadfastId": "SF-73093550",
+      "sfId": "SF-73093550",
+      "trackingCode": "TRK-C73S8K",
+      "courier": "Steadfast"
+    },
+    {
+      "id": "ORD-14606",
+      "customerId": "CUST-4493",
+      "status": "Shipped via Steadfast",
+      "createdAt": "2026-11-14T17:44:19.608Z",
+      "customerName": "Craftiq Guest",
+      "phone": "01319093025",
+      "district": "Dhaka",
+      "thana": "Mirpur",
+      "address": "13rwdf, Mirpur",
+      "city": "Dhaka",
+      "orderNote": "",
+      "deliveryZone": "Inside Dhaka (৳70)",
+      "deliveryCharge": 70,
+      "paymentMethod": "Cash on Delivery",
+      "items": [
+        {
+          "id": "prod-1",
+          "name": "Minimalist Teak Wall Panel",
+          "price": 4500,
+          "quantity": 1
+        }
+      ],
+      "total": 4570,
+      "consignmentId": "320918302",
+      "trackingCode": "SFR261114STFC06B97BD"
+    },
+    {
+      "id": "ORD-93931",
+      "status": "Delivered",
+      "createdAt": "2026-11-14T17:23:49.755Z",
+      "customerName": "Craftiq bd",
+      "phone": "01319093025",
+      "address": "13rwdf",
+      "city": "dhaka",
+      "paymentMethod": "Cash on Delivery",
+      "items": [
+        {
+          "id": "prod-1",
+          "name": "Minimalist Teak Wall Panel",
+          "slug": "minimalist-teak-wall-panel",
+          "price": 4500,
+          "image": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=1000&q=80",
+          "quantity": 1
+        }
+      ],
+      "total": 4600,
+      "consignmentId": "320914006",
+      "trackingCode": "SFR261114ST9F7FBEDBD"
+    },
+    {
+      "id": "ORD-64349",
+      "status": "Processing",
+      "createdAt": "2026-11-14T17:17:35.139Z",
+      "customerName": "siam",
+      "phone": "01319093025",
+      "address": "22a",
+      "city": "dhaka",
+      "paymentMethod": "Cash on Delivery",
+      "items": [
+        {
+          "id": "prod-1",
+          "name": "Minimalist Teak Wall Panel",
+          "slug": "minimalist-teak-wall-panel",
+          "price": 4500,
+          "image": "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=1000&q=80",
+          "quantity": 1
+        }
+      ],
+      "total": 4600,
+      "consignmentId": "SF-40719654",
+      "trackingCode": "TRK-883034"
+    }
+  ],
+  "customers": [
+    {
+      "customerId": "CUST-4493",
+      "name": "Craftiq Guest",
+      "phone": "01319093025",
+      "district": "Dhaka",
+      "thana": "Mirpur",
+      "address": "13rwdf, Mirpur, Mirpur, Mirpur, Mirpur, Mirpur, Mirpur",
+      "createdAt": "2026-11-14T17:44:19.608Z"
+    }
+  ],
+  "cart": [],
+  "settings": {
+    "steadfastApiKey": "f6iknvvrzhh3xsgmu21i9rankhn52nf6",
+    "steadfastSecretKey": "qfhizzik9zddlzhnuokjn0cc",
+    "fbPixelId": "",
+    "fbAccessToken": "",
+    "whatsappNumber": "8801319093025",
+    "storeName": "CRAFTIQ",
+    "logoUrl": "/uploads/1794684047074-logo-craftiq-logo-new.jpg",
+    "bannerImage": "",
+    "noticeText": "Handcrafted Solid Timber Masterpieces • Cash on Delivery Across Bangladesh",
+    "facebookPixelId": "",
+    "logo": "/uploads/1794689087598-logo-logo-192.png",
+    "heroBanner": ""
+  },
+  "user": {
+    "customerId": "CUST-4493",
+    "name": "Craftiq Guest",
+    "phone": "01319093025",
+    "district": "Dhaka",
+    "thana": "Mirpur",
+    "address": "13rwdf, Mirpur, Mirpur, Mirpur, Mirpur, Mirpur, Mirpur",
+    "createdAt": "2026-11-14T17:44:19.608Z"
+  }
+}
