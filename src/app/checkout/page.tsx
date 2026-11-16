@@ -1,140 +1,230 @@
-import Link from 'next/link';
-import { prisma } from '@/lib/prisma';
-import { redirect } from 'next/navigation';
-import { sendFacebookEvent } from '@/lib/facebook-capi';
+"use client";
 
-export default async function CheckoutPage() {
-  const cartItems = await prisma.cart.findMany();
-  const subtotal = cartItems.reduce((sum: number, item: any) => sum + (Number(item.price) * Number(item.quantity)), 0);
-  const deliveryCharge = 100;
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+export default function CheckoutPage() {
+  const router = useRouter();
+  const [cart, setCart] = useState<any[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    customerName: "",
+    phone: "",
+    address: "",
+    city: "Dhaka",
+    paymentMethod: "Cash on Delivery",
+  });
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("cart");
+      if (stored) {
+        setCart(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error("Failed to load cart", e);
+    }
+  }, []);
+
+  const subtotal = cart.reduce(
+    (sum, item) => sum + Number(item.price) * Number(item.quantity || 1),
+    0
+  );
+  const deliveryCharge = formData.city.toLowerCase().includes("dhaka") && !formData.city.toLowerCase().includes("outside") ? 70 : 130;
   const total = subtotal > 0 ? subtotal + deliveryCharge : 0;
 
-  async function handlePlaceOrder(formData: FormData) {
-    'use server';
-    
-    const customerName = formData.get('customerName') as string;
-    const phone = formData.get('phone') as string;
-    const address = formData.get('address') as string;
-    const city = formData.get('city') as string;
-    const paymentMethod = formData.get('paymentMethod') as string || 'Cash on Delivery';
+  const handleInputChange = (e: any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    const cart = await prisma.cart.findMany();
-    if (cart.length === 0) return;
+  const handlePlaceOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    if (!formData.customerName || !formData.phone || !formData.address) {
+      alert("Please provide Name, Phone number, and Delivery Address.");
+      return;
+    }
 
-    const orderSubtotal = cart.reduce((sum: number, item: any) => sum + (Number(item.price) * Number(item.quantity)), 0);
-    const orderTotal = orderSubtotal + 100;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          items: cart,
+          total,
+        }),
+      });
 
-    // ১. ডাটাবেজে অর্ডার সেভ করা
-    const newOrder = await prisma.order.create({
-      customerName,
-      phone,
-      address,
-      city,
-      paymentMethod,
-      items: cart,
-      total: orderTotal,
-    });
-
-    // ২. অর্ডার কনফার্ম হওয়ার সাথে সাথে ফেসবুক CAPI-তে Purchase ইভেন্ট পাঠানো
-    await sendFacebookEvent(
-      'Purchase',
-      {
-        currency: 'BDT',
-        value: Number(orderTotal),
-        content_type: 'product',
-        contents: cart.map((i: any) => ({ id: i.id, quantity: i.quantity })),
-      },
-      {
-        phone: phone,
-        email: 'customer@craftiq.store',
+      const data = await res.json();
+      if (res.ok && (data.order || data.id || data.success)) {
+        localStorage.removeItem("cart");
+        window.dispatchEvent(new Event("storage"));
+        const orderId = data.order?.id || data.id || "success";
+        router.push("/track?orderId=" + orderId + "&success=true");
+      } else {
+        alert(data.error || "Order placement failed. Please try again.");
       }
-    );
-
-    redirect('/account?success=true');
-  }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to submit order.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F8F7F3] text-[#242424] p-6 md:p-12">
       <div className="max-w-4xl mx-auto mb-8 pb-6 border-b border-[#E2DDD5] flex justify-between items-center">
         <div>
-          <span className="text-xs uppercase tracking-[0.2em] text-[#9B704D] font-semibold">Secure Checkout</span>
-          <h1 className="font-serif text-3xl md:text-4xl font-light mt-1 text-[#242424]">Complete Your Order</h1>
+          <span className="text-xs uppercase tracking-[0.2em] text-[#9B704D] font-semibold">
+            Secure Checkout
+          </span>
+          <h1 className="text-2xl md:text-3xl font-serif text-[#242424] mt-1">
+            Complete Your Order
+          </h1>
         </div>
-        <Link href="/cart" className="border border-[#242424] px-4 py-2.5 text-xs uppercase tracking-widest font-medium hover:bg-[#242424] hover:text-white transition">
-          &larr; Back to Bag
+        <Link href="/shop" className="text-xs uppercase tracking-widest text-[#9B704D] hover:underline">
+          ← Back to Shop
         </Link>
       </div>
 
-      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Checkout Form */}
-        <div className="bg-white border border-[#E2DDD5] p-8 shadow-sm">
-          <h2 className="font-serif text-xl font-light mb-6 text-[#9B704D]">Shipping & Contact Information</h2>
-          
-          <form action={handlePlaceOrder} className="space-y-4">
+      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
+        {/* Customer Details Form */}
+        <div className="md:col-span-7 bg-white p-6 border border-stone-200 shadow-sm">
+          <h2 className="text-sm font-semibold uppercase tracking-wider mb-6 text-stone-700">
+            Shipping Information
+          </h2>
+          <form onSubmit={handlePlaceOrder} className="flex flex-col gap-4">
             <div>
-              <label className="block text-xs uppercase tracking-widest text-[#777777] mb-2">Full Name *</label>
-              <input type="text" name="customerName" required placeholder="Jahid Hasan" className="w-full border border-[#E2DDD5] px-4 py-3 text-sm bg-[#F8F7F3]/40 focus:outline-none focus:border-[#9B704D]" />
+              <label className="block text-xs uppercase tracking-wider text-stone-500 mb-1">Full Name *</label>
+              <input
+                required
+                type="text"
+                name="customerName"
+                value={formData.customerName}
+                onChange={handleInputChange}
+                className="w-full border border-stone-300 p-2.5 text-sm focus:outline-[#9B704D]"
+                placeholder="আপনার নাম লিখুন"
+              />
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-widest text-[#777777] mb-2">Phone Number *</label>
-              <input type="text" name="phone" required placeholder="01712345678" className="w-full border border-[#E2DDD5] px-4 py-3 text-sm bg-[#F8F7F3]/40 focus:outline-none focus:border-[#9B704D]" />
+              <label className="block text-xs uppercase tracking-wider text-stone-500 mb-1">Phone Number *</label>
+              <input
+                required
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="w-full border border-stone-300 p-2.5 text-sm focus:outline-[#9B704D]"
+                placeholder="01XXXXXXXXX"
+              />
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-widest text-[#777777] mb-2">Delivery Address *</label>
-              <textarea name="address" required rows={3} placeholder="House, Road, Area" className="w-full border border-[#E2DDD5] px-4 py-3 text-sm bg-[#F8F7F3]/40 focus:outline-none focus:border-[#9B704D]" />
+              <label className="block text-xs uppercase tracking-wider text-stone-500 mb-1">Delivery Address *</label>
+              <textarea
+                required
+                rows={3}
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                className="w-full border border-stone-300 p-2.5 text-sm focus:outline-[#9B704D]"
+                placeholder="বাসা নং, রোড নং, এলাকা এবং থানা"
+              />
             </div>
 
-            <div>
-              <label className="block text-xs uppercase tracking-widest text-[#777777] mb-2">City / District *</label>
-              <input type="text" name="city" required placeholder="Dhaka / Noakhali" className="w-full border border-[#E2DDD5] px-4 py-3 text-sm bg-[#F8F7F3]/40 focus:outline-none focus:border-[#9B704D]" />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-stone-500 mb-1">Delivery Area</label>
+                <select
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className="w-full border border-stone-300 p-2.5 text-sm focus:outline-[#9B704D]"
+                >
+                  <option value="Dhaka">Inside Dhaka (৳70)</option>
+                  <option value="Outside Dhaka">Outside Dhaka (৳130)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-stone-500 mb-1">Payment Method</label>
+                <input
+                  type="text"
+                  readOnly
+                  value="Cash on Delivery"
+                  className="w-full border border-stone-200 bg-stone-50 p-2.5 text-sm text-stone-600"
+                />
+              </div>
             </div>
 
-            <input type="hidden" name="paymentMethod" value="Cash on Delivery" />
-
-            <div className="pt-4">
-              <button type="submit" className="w-full bg-[#9B704D] text-white py-4 text-xs uppercase tracking-widest font-medium hover:bg-amber-800 transition cursor-pointer">
-                Confirm Order (Cash on Delivery)
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={isSubmitting || cart.length === 0}
+              className="mt-4 w-full bg-[#9B704D] text-white py-4 text-xs uppercase tracking-widest font-semibold hover:bg-[#835d3f] transition disabled:opacity-50 shadow-sm"
+            >
+              {isSubmitting ? "Processing..." : `Confirm Order — ৳${total.toLocaleString()}`}
+            </button>
           </form>
         </div>
 
         {/* Order Summary */}
-        <div className="bg-white border border-[#E2DDD5] p-8 shadow-sm h-fit">
-          <h2 className="font-serif text-xl font-light mb-6 text-[#9B704D]">Order Summary</h2>
-          
-          <div className="space-y-4 mb-6 divide-y divide-[#E2DDD5]">
-            {cartItems.length === 0 ? (
-              <p className="text-xs text-[#777777] py-4">Your bag is empty.</p>
-            ) : (
-              cartItems.map((item: any) => (
-                <div key={item.id} className="pt-3 first:pt-0 flex justify-between text-sm">
-                  <div>
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-xs text-[#777777]">Qty: {item.quantity}</p>
-                  </div>
-                  <p className="font-medium text-[#9B704D]">৳{Number(item.price) * Number(item.quantity)}</p>
-                </div>
-              ))
-            )}
-          </div>
+        <div className="md:col-span-5 bg-white p-6 border border-stone-200 shadow-sm h-fit">
+          <h2 className="text-sm font-semibold uppercase tracking-wider mb-4 text-stone-700">
+            Order Summary ({cart.length})
+          </h2>
 
-          <div className="border-t border-[#E2DDD5] pt-4 space-y-2 text-xs">
-            <div className="flex justify-between text-[#777777]">
-              <span>Subtotal</span>
-              <span>৳{subtotal}</span>
+          {cart.length === 0 ? (
+            <div className="py-8 text-center text-stone-400 text-sm">
+              Your cart is empty.
+              <div className="mt-2">
+                <Link href="/shop" className="text-xs text-[#9B704D] underline uppercase tracking-wider">
+                  Browse Products
+                </Link>
+              </div>
             </div>
-            <div className="flex justify-between text-[#777777]">
-              <span>Shipping Charge</span>
-              <span>৳{subtotal > 0 ? deliveryCharge : 0}</span>
+          ) : (
+            <div className="flex flex-col divide-y divide-stone-100">
+              {cart.map((item, idx) => (
+                <div key={idx} className="py-3 flex justify-between items-center text-sm">
+                  <div className="flex items-center gap-3">
+                    {item.image && (
+                      <img src={item.image} alt={item.name} className="w-12 h-12 object-cover border border-stone-200" />
+                    )}
+                    <div>
+                      <div className="font-medium text-stone-800 line-clamp-1">{item.title || item.name}</div>
+                      <div className="text-xs text-stone-400">Qty: {item.quantity || 1}</div>
+                    </div>
+                  </div>
+                  <div className="font-semibold text-stone-700">
+                    ৳{(Number(item.price) * (item.quantity || 1)).toLocaleString()}
+                  </div>
+                </div>
+              ))}
+
+              <div className="pt-4 flex flex-col gap-2 text-sm text-stone-600">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>৳{subtotal.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Delivery Charge</span>
+                  <span>৳{deliveryCharge}</span>
+                </div>
+                <div className="flex justify-between text-base font-bold text-stone-900 border-t border-stone-200 pt-2 mt-1">
+                  <span>Total</span>
+                  <span className="text-[#9B704D]">৳{total.toLocaleString()}</span>
+                </div>
+              </div>
             </div>
-            <div className="flex justify-between text-sm font-medium text-[#242424] pt-2 border-t border-[#E2DDD5]">
-              <span>Total Amount</span>
-              <span className="text-[#9B704D]">৳{total}</span>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
