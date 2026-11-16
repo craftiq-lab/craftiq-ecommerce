@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import AddToCartButton from "./AddToCartButton";
 
@@ -33,7 +32,6 @@ export default async function ProductDetailPage({
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-[#242424] font-sans">
-      {/* Top Navigation */}
       <header className="border-b border-stone-200 bg-white/80 backdrop-blur sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/shop" className="text-xs uppercase tracking-widest text-stone-500 hover:text-black">
@@ -45,10 +43,8 @@ export default async function ProductDetailPage({
         </div>
       </header>
 
-      {/* Product View */}
       <main className="max-w-5xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-          {/* Image */}
           <div className="relative aspect-square w-full bg-stone-100 border border-stone-200 overflow-hidden shadow-sm">
             <img
               src={primaryImage}
@@ -57,7 +53,6 @@ export default async function ProductDetailPage({
             />
           </div>
 
-          {/* Details & Actions */}
           <div className="flex flex-col gap-6">
             <div>
               <span className="text-xs uppercase tracking-widest text-[#9B704D] font-semibold">
@@ -83,7 +78,6 @@ export default async function ProductDetailPage({
               {product.description || "Handcrafted with natural pine wood finish and precision laser engraving."}
             </div>
 
-            {/* Interactive Cart Buttons */}
             <AddToCartButton product={JSON.parse(JSON.stringify(product))} />
           </div>
         </div>
